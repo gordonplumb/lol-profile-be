@@ -1,4 +1,4 @@
-package com.gordonplumb.matchhistory.model;
+package com.gordonplumb.lolprofile.model;
 
 public class Account {
     private String accountId;

@@ -1,6 +1,6 @@
-package com.gordonplumb.matchhistory.service;
+package com.gordonplumb.lolprofile.service;
 
-import com.gordonplumb.matchhistory.model.Account;
+import com.gordonplumb.lolprofile.model.Account;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;

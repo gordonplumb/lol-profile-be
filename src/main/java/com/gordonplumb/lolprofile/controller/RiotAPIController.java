@@ -1,9 +1,8 @@
-package com.gordonplumb.matchhistory.controller;
+package com.gordonplumb.lolprofile.controller;
 
-import com.gordonplumb.matchhistory.model.Account;
-import com.gordonplumb.matchhistory.service.RiotAPIService;
+import com.gordonplumb.lolprofile.model.Account;
+import com.gordonplumb.lolprofile.service.RiotAPIService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
