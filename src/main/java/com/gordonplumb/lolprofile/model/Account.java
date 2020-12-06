@@ -1,12 +1,14 @@
 package com.gordonplumb.lolprofile.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Account {
+    @Id
     private String accountId;
     private int profileIconId;
-    private long revisionDate;
     private String name;
-    private String id;
-    private String puuid;
     private long summonerLevel;
 
     public String getAccountId() {
@@ -25,36 +27,12 @@ public class Account {
         this.profileIconId = profileIconId;
     }
 
-    public long getRevisionDate() {
-        return revisionDate;
-    }
-
-    public void setRevisionDate(long revisionDate) {
-        this.revisionDate = revisionDate;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getPuuid() {
-        return puuid;
-    }
-
-    public void setPuuid(String puuid) {
-        this.puuid = puuid;
     }
 
     public long getSummonerLevel() {
