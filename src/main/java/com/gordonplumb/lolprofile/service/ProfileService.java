@@ -1,10 +1,7 @@
 package com.gordonplumb.lolprofile.service;
 
-import com.gordonplumb.lolprofile.model.Account;
-import com.gordonplumb.lolprofile.model.AccountMatchReference;
-import com.gordonplumb.lolprofile.model.AccountMatchReferenceId;
-import com.gordonplumb.lolprofile.model.MatchData;
-import com.gordonplumb.lolprofile.repository.AccountMatchReferenceRepository;
+import com.gordonplumb.lolprofile.model.*;
+import com.gordonplumb.lolprofile.repository.AccountMatchDataRepository;
 import com.gordonplumb.lolprofile.repository.AccountRepository;
 import com.gordonplumb.lolprofile.repository.MatchDataRepository;
 import org.slf4j.Logger;
@@ -23,7 +20,7 @@ public class ProfileService {
     private AccountRepository accountRepository;
 
     @Autowired
-    private AccountMatchReferenceRepository accountMatchReferenceRepository;
+    private AccountMatchDataRepository accountMatchDataRepository;
 
     @Autowired
     private MatchDataRepository matchDataRepository;
@@ -52,14 +49,14 @@ public class ProfileService {
         });
     }
 
-    public List<AccountMatchReference> findPaginated(String accountId, int page, int size) {
+    public List<MatchShortDetails> findPaginated(String accountId, int page, int size) {
         logger.debug("findPaginated: " + accountId + ", " + page + ", " + size);
         Pageable pageable = PageRequest.of(page, size, Sort.by("timestamp").descending());
-        return accountMatchReferenceRepository.findAllByAccountId(accountId, pageable);
+        return accountMatchDataRepository.findAllByAccountId(accountId, pageable);
     }
 
     public MatchData getMatchData(String accountId, long matchId) {
         logger.debug("getMatchData: " + accountId + ", " + matchId);
-        return matchDataRepository.findById(new AccountMatchReferenceId(accountId, matchId)).orElse(null);
+        return matchDataRepository.findById(new AccountMatchDataId(accountId, matchId)).orElse(null);
     }
 }

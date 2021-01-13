@@ -1,27 +1,37 @@
 package com.gordonplumb.lolprofile.model;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 
 @Entity
-@IdClass(AccountMatchReferenceId.class)
-public class AccountMatchReference {
+@IdClass(AccountMatchDataId.class)
+public class AccountMatchData {
     @Id
     private String accountId;
     @Id
     private long matchId;
+
+    private int spell1Id;
+    private int spell2Id;
+
+    @Embedded
+    private ParticipantStats participantStats;
     private String role;
     private int champion;
     private int queue;
     private String lane;
     private long timestamp;
 
-    public AccountMatchReference() {}
+    public AccountMatchData() {}
 
-    public AccountMatchReference(String accountId, long matchId, String role, int champion, int queue, String lane, long timestamp) {
+    public AccountMatchData(String accountId, long matchId, int spell1Id, int spell2Id, ParticipantStats participantStats, String role, int champion, int queue, String lane, long timestamp) {
         this.accountId = accountId;
         this.matchId = matchId;
+        this.spell1Id = spell1Id;
+        this.spell2Id = spell2Id;
+        this.participantStats = participantStats;
         this.role = role;
         this.champion = champion;
         this.queue = queue;
@@ -43,6 +53,30 @@ public class AccountMatchReference {
 
     public void setMatchId(long matchId) {
         this.matchId = matchId;
+    }
+
+    public int getSpell1Id() {
+        return spell1Id;
+    }
+
+    public void setSpell1Id(int spell1Id) {
+        this.spell1Id = spell1Id;
+    }
+
+    public int getSpell2Id() {
+        return spell2Id;
+    }
+
+    public void setSpell2Id(int spell2Id) {
+        this.spell2Id = spell2Id;
+    }
+
+    public ParticipantStats getParticipantStats() {
+        return participantStats;
+    }
+
+    public void setParticipantStats(ParticipantStats participantStats) {
+        this.participantStats = participantStats;
     }
 
     public String getRole() {

@@ -1,8 +1,9 @@
 package com.gordonplumb.lolprofile.controller;
 
 import com.gordonplumb.lolprofile.model.Account;
-import com.gordonplumb.lolprofile.model.AccountMatchReference;
+import com.gordonplumb.lolprofile.model.AccountMatchData;
 import com.gordonplumb.lolprofile.model.MatchData;
+import com.gordonplumb.lolprofile.model.MatchShortDetails;
 import com.gordonplumb.lolprofile.service.ProfileService;
 import com.gordonplumb.lolprofile.service.RiotAPIService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,8 @@ public class ProfileController {
 
     @GetMapping(path = "/matches")
     @ResponseBody
-    public List<AccountMatchReference> getMatches(@RequestParam String accountId, @RequestParam int page, @RequestParam int size) {
-        List<AccountMatchReference> resultPage = profileService.findPaginated(accountId, page, size);
+    public List<MatchShortDetails> getMatches(@RequestParam String accountId, @RequestParam int page, @RequestParam int size) {
+        List<MatchShortDetails> resultPage = profileService.findPaginated(accountId, page, size);
 
         return resultPage;
     }
@@ -47,16 +48,16 @@ public class ProfileController {
 
     @GetMapping(path = "/updateAccount")
     @ResponseBody
-    public Account updateAccount(@RequestParam String name) {
+    public void updateAccount(@RequestParam String name) {
         Account account = riotAPIService.getAccount(name);
         profileService.updateAccount(account);
-        return account;
+        riotAPIService.getMatches(account.getAccountId());
     }
 
     @GetMapping(path = "/updateMatches")
     @ResponseBody
-    public List<AccountMatchReference> getNewMatches(@RequestParam String accountId) {
-        List<AccountMatchReference> matchlist = riotAPIService.getMatches(accountId);
+    public List<AccountMatchData> getNewMatches(@RequestParam String accountId) {
+        List<AccountMatchData> matchlist = riotAPIService.getMatches(accountId);
         return matchlist;
     }
 

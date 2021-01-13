@@ -3,13 +3,13 @@ package com.gordonplumb.lolprofile.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class AccountMatchReferenceId implements Serializable {
+public class AccountMatchDataId implements Serializable {
     private String accountId;
     private long matchId;
 
-    public AccountMatchReferenceId() {}
+    public AccountMatchDataId() {}
 
-    public AccountMatchReferenceId(String accountId, long matchId) {
+    public AccountMatchDataId(String accountId, long matchId) {
         this.accountId = accountId;
         this.matchId = matchId;
     }
@@ -34,7 +34,7 @@ public class AccountMatchReferenceId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AccountMatchReferenceId that = (AccountMatchReferenceId) o;
+        AccountMatchDataId that = (AccountMatchDataId) o;
         return matchId == that.matchId &&
                 accountId.equals(that.accountId);
     }
