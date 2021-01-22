@@ -109,10 +109,9 @@ public class RiotAPIService {
                             participant.getSpell1Id(),
                             participant.getSpell2Id(),
                             participantStats,
-                            matchReference.getRole(),
+                            getRole(matchReference.getRole(), matchReference.getLane()),
                             matchReference.getChampion(),
                             matchReference.getQueue(),
-                            matchReference.getLane(),
                             matchReference.getTimestamp()
                     );
 
@@ -174,5 +173,25 @@ public class RiotAPIService {
                 .retrieve()
                 .bodyToMono(Match.class)
                 .block();
+    }
+
+    private int getRole(String role, String lane) {
+        int roleNum;
+        switch (role) {
+            case "SOLO":
+                roleNum = lane.equals("TOP") ? 0 : 2;
+                break;
+            case "DUO_CARRY":
+                roleNum = 3;
+                break;
+            case "DUO_SUPPORT":
+                roleNum = 4;
+                break;
+            default:
+                roleNum = 1;
+                break;
+        }
+
+        return roleNum;
     }
 }

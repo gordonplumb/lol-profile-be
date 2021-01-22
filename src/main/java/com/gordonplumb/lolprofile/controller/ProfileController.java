@@ -1,9 +1,6 @@
 package com.gordonplumb.lolprofile.controller;
 
-import com.gordonplumb.lolprofile.model.Account;
-import com.gordonplumb.lolprofile.model.AccountMatchData;
-import com.gordonplumb.lolprofile.model.MatchData;
-import com.gordonplumb.lolprofile.model.MatchShortDetails;
+import com.gordonplumb.lolprofile.model.*;
 import com.gordonplumb.lolprofile.service.ProfileService;
 import com.gordonplumb.lolprofile.service.RiotAPIService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +56,16 @@ public class ProfileController {
     public List<AccountMatchData> getNewMatches(@RequestParam String accountId) {
         List<AccountMatchData> matchlist = riotAPIService.getMatches(accountId);
         return matchlist;
+    }
+
+    @GetMapping(path = "/stats")
+    @ResponseBody
+    public AggregateStats getStats(
+            @RequestParam String accountId,
+            @RequestParam(required = false) Integer champion,
+            @RequestParam(required = false) List<Integer> queues,
+            @RequestParam(required = false) List<Integer> roles) {
+        return profileService.getStats(accountId, champion, queues, roles);
     }
 
 }

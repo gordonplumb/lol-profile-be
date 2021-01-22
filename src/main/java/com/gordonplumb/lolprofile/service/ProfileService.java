@@ -59,4 +59,12 @@ public class ProfileService {
         logger.debug("getMatchData: " + accountId + ", " + matchId);
         return matchDataRepository.findById(new AccountMatchDataId(accountId, matchId)).orElse(null);
     }
+
+    public AggregateStats getStats(String accountId, Integer champion, List<Integer> queues, List<Integer> roles) {
+        if (champion == -1) {
+            return accountMatchDataRepository.getStats(accountId, queues, roles);
+        }
+
+        return accountMatchDataRepository.getStatsByChampion(accountId, champion, queues, roles);
+    }
 }

@@ -18,15 +18,14 @@ public class AccountMatchData {
 
     @Embedded
     private ParticipantStats participantStats;
-    private String role;
+    private int role;
     private int champion;
     private int queue;
-    private String lane;
     private long timestamp;
 
     public AccountMatchData() {}
 
-    public AccountMatchData(String accountId, long matchId, int spell1Id, int spell2Id, ParticipantStats participantStats, String role, int champion, int queue, String lane, long timestamp) {
+    public AccountMatchData(String accountId, long matchId, int spell1Id, int spell2Id, ParticipantStats participantStats, int role, int champion, int queue, long timestamp) {
         this.accountId = accountId;
         this.matchId = matchId;
         this.spell1Id = spell1Id;
@@ -35,7 +34,6 @@ public class AccountMatchData {
         this.role = role;
         this.champion = champion;
         this.queue = queue;
-        this.lane = lane;
         this.timestamp = timestamp;
     }
 
@@ -79,11 +77,11 @@ public class AccountMatchData {
         this.participantStats = participantStats;
     }
 
-    public String getRole() {
+    public int getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(int role) {
         this.role = role;
     }
 
@@ -101,14 +99,6 @@ public class AccountMatchData {
 
     public void setQueue(int queue) {
         this.queue = queue;
-    }
-
-    public String getLane() {
-        return lane;
-    }
-
-    public void setLane(String lane) {
-        this.lane = lane;
     }
 
     public long getTimestamp() {
