@@ -9,11 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -70,19 +66,6 @@ public class RiotAPIService {
                 .block();
 
         if (matchList != null) {
-//            List<AccountMatchData> accountMatches = matchList.getMatches().stream().map(match -> {
-//                AccountMatchData matchReference = new AccountMatchData(
-//                        encryptedAccountId,
-//                        match.getGameId(),
-//                        match.getRole(),
-//                        match.getChampion(),
-//                        match.getQueue(),
-//                        match.getLane(),
-//                        match.getTimestamp()
-//                );
-//                accountMatchDataRepository.save(matchReference);
-//                return matchReference;
-//            }).collect(Collectors.toList());
             List<MatchReference> matchReferences = matchList.getMatches();
 
             List<AccountMatchData> accountMatchDataList = matchReferences.stream().map(matchReference -> {
@@ -102,17 +85,27 @@ public class RiotAPIService {
 
                 AccountMatchData accountMatchData = null;
                 if (participant != null) {
+                    int teamId = participant.getTeamId();
+                    double teamKills = participants.stream()
+                            .filter(p -> p.getTeamId() == teamId)
+                            .mapToInt(p -> p.getStats().getKills()).sum();
                     ParticipantStats participantStats = participant.getStats();
+                    double killParticipation = teamKills > 0 ?
+                            ((participantStats.getKills() + participantStats.getAssists()) / teamKills) : 0;
+
                     accountMatchData = new AccountMatchData(
                             encryptedAccountId,
                             match.getGameId(),
                             participant.getSpell1Id(),
                             participant.getSpell2Id(),
+                            killParticipation,
                             participantStats,
                             getRole(matchReference.getRole(), matchReference.getLane()),
                             matchReference.getChampion(),
                             matchReference.getQueue(),
-                            matchReference.getTimestamp()
+                            matchReference.getTimestamp(),
+                            match.getGameDuration(),
+                            match.getGameVersion()
                     );
 
                     accountMatchDataRepository.save(accountMatchData);
@@ -120,51 +113,11 @@ public class RiotAPIService {
 
                 return accountMatchData;
             }).collect(Collectors.toList());
-
-//            List<Long> matchIds = matchList.getMatches()
-//                    .stream()
-//                    .map(MatchReference::getGameId)
-//                    .collect(Collectors.toList());
-//            getAllMatchData(matchIds).subscribe(match -> {
-//                // find the participant dto of the player
-//                Participant participant = null;
-//                List<ParticipantIdentity> participantIdentities = match.getParticipantIdentities();
-//                List<Participant> participants = match.getParticipants();
-//                for (int i = 0; i < 10; i++) {
-//                    ParticipantIdentity participantIdentity = participantIdentities.get(i);
-//                    if (participantIdentity.getPlayer().getCurrentAccountId().equals(encryptedAccountId)) {
-//                        participant = participants.get(i);
-//                        break;
-//                    }
-//                }
-//
-//                if (participant != null) {
-//                    ParticipantStats participantStats = participant.getStats();
-//                    MatchData matchData = new MatchData(
-//                            encryptedAccountId,
-//                            match.getGameId(),
-//                            participant.getSpell1Id(),
-//                            participant.getSpell2Id(),
-//                            participantStats
-//                    );
-//                    matchDataRepository.save(matchData);
-//                }
-//            });
             return accountMatchDataList;
         }
 
         return new ArrayList<>();
     }
-
-//    private Flux<Match> getAllMatchData(List<Long> matchIds) {
-//        logger.debug("getAllMatchData");
-//        return Flux.fromIterable(matchIds)
-//                .delayElements(Duration.ofMillis(200))
-//                .parallel()
-//                .runOn(Schedulers.boundedElastic())
-//                .flatMap(this::getMatchData)
-//                .sequential();
-//    }
 
     private Match getMatchData(long matchId) {
         logger.debug("getMatchData: " + matchId);

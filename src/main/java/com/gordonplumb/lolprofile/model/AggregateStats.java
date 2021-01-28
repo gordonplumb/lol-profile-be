@@ -2,33 +2,31 @@ package com.gordonplumb.lolprofile.model;
 
 public interface AggregateStats {
     int getGamesPlayed();
-    Double getWinRate();
+    Integer getWins();
 
     Integer getKills();
     Integer getDeaths();
     Integer getAssists();
+    Double getKillParticipation();
 
-    // do dpm instead
-//    int getDamageDealtToChampions();
-//    int getPhysicalDamageDealtToChampions();
-//    int getMagicDamageDealtToChampions();
-//    int getTrueDamageDealtToChampions();
+    Integer getDoubleKills();
+    Integer getTripleKills();
+    Integer getQuadraKills();
+    Integer getPentaKills();
 
-//    int getDamageToTurrets();
-//
-//    int getSelfMitigatedDamage();
-//
-//    int getGoldEarned();
-//    int getNeutralMinionsKilledEnemyJungle();
-//    int getNeutralMinionsKilledTeamJungle();
-//    int getMinionsKilled();
-//
-//    int getSightWardsBought();
-//    int getVisionWardsBought();
-//    int getWardsKilled();
-//    int getWardsPlaced();
-//    int getVisionScore();
+    Integer getFirstBlood();
+    Integer getFirstTower();
+
+    Double getDamagePerMinute();
+    Double getHealPerMinute();
+
+    Double getGoldPerMinute();
+    Double getCsPerMinute();
+
+    Double getWardsPlacedPerHour();
+    Double getWardsKilledPerHour();
+    Double getVisionScorePerHour();
+
 //    int getTimeCCingOthers();
-//    int getTotalHeal();
 
 }

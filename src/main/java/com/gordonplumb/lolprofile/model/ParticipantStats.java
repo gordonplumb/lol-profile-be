@@ -27,6 +27,8 @@ public class ParticipantStats {
     private int tripleKills;
     private int quadraKills;
     private int pentaKills;
+    private boolean firstBloodKill;
+    private boolean firstBloodAssist;
 
     private int largestCriticalStrike;
     private int totalDamageDealt;
@@ -37,8 +39,11 @@ public class ParticipantStats {
     private int magicDamageDealtToChampions;
     private int physicalDamageDealtToChampions;
     private int trueDamageDealtToChampions;
+
     private int damageDealtToObjectives;
     private int damageDealtToTurrets;
+    private boolean firstTowerKill;
+    private boolean firstTowerAssist;
 
     private int totalHeal;
     private int damageSelfMitigated;
@@ -58,6 +63,7 @@ public class ParticipantStats {
     private int goldEarned;
     private int goldSpent;
     private int totalMinionsKilled;
+    private int neutralMinionsKilled;
     private int neutralMinionsKilledTeamJungle;
     private int neutralMinionsKilledEnemyJungle;
 
@@ -227,6 +233,22 @@ public class ParticipantStats {
         this.pentaKills = pentaKills;
     }
 
+    public boolean isFirstBloodKill() {
+        return firstBloodKill;
+    }
+
+    public void setFirstBloodKill(boolean firstBloodKill) {
+        this.firstBloodKill = firstBloodKill;
+    }
+
+    public boolean isFirstBloodAssist() {
+        return firstBloodAssist;
+    }
+
+    public void setFirstBloodAssist(boolean firstBloodAssist) {
+        this.firstBloodAssist = firstBloodAssist;
+    }
+
     public int getLargestCriticalStrike() {
         return largestCriticalStrike;
     }
@@ -313,6 +335,22 @@ public class ParticipantStats {
 
     public void setDamageDealtToTurrets(int damageDealtToTurrets) {
         this.damageDealtToTurrets = damageDealtToTurrets;
+    }
+
+    public boolean isFirstTowerKill() {
+        return firstTowerKill;
+    }
+
+    public void setFirstTowerKill(boolean firstTowerKill) {
+        this.firstTowerKill = firstTowerKill;
+    }
+
+    public boolean isFirstTowerAssist() {
+        return firstTowerAssist;
+    }
+
+    public void setFirstTowerAssist(boolean firstTowerAssist) {
+        this.firstTowerAssist = firstTowerAssist;
     }
 
     public int getTotalHeal() {
@@ -441,6 +479,14 @@ public class ParticipantStats {
 
     public void setTotalMinionsKilled(int totalMinionsKilled) {
         this.totalMinionsKilled = totalMinionsKilled;
+    }
+
+    public int getNeutralMinionsKilled() {
+        return neutralMinionsKilled;
+    }
+
+    public void setNeutralMinionsKilled(int neutralMinionsKilled) {
+        this.neutralMinionsKilled = neutralMinionsKilled;
     }
 
     public int getNeutralMinionsKilledTeamJungle() {

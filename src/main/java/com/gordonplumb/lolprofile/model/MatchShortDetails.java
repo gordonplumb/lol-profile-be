@@ -20,5 +20,7 @@ public interface MatchShortDetails {
     boolean getWin();
     String getRole();
     long getTimestamp();
+    long getGameDuration();
     int getQueue();
+    String getGameVersion();
 }

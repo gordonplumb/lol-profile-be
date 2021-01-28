@@ -18,23 +18,31 @@ public class AccountMatchData {
 
     @Embedded
     private ParticipantStats participantStats;
+    private double killParticipation;
     private int role;
     private int champion;
     private int queue;
     private long timestamp;
+    private long gameDuration; // seconds
+    private String gameVersion;
 
     public AccountMatchData() {}
 
-    public AccountMatchData(String accountId, long matchId, int spell1Id, int spell2Id, ParticipantStats participantStats, int role, int champion, int queue, long timestamp) {
+    public AccountMatchData(String accountId, long matchId, int spell1Id, int spell2Id, double killParticipation,
+                            ParticipantStats participantStats, int role, int champion, int queue, long timestamp,
+                            long gameDuration, String gameVersion) {
         this.accountId = accountId;
         this.matchId = matchId;
         this.spell1Id = spell1Id;
         this.spell2Id = spell2Id;
+        this.killParticipation = killParticipation;
         this.participantStats = participantStats;
         this.role = role;
         this.champion = champion;
         this.queue = queue;
         this.timestamp = timestamp;
+        this.gameDuration = gameDuration;
+        this.gameVersion = gameVersion;
     }
 
     public String getAccountId() {
@@ -67,6 +75,14 @@ public class AccountMatchData {
 
     public void setSpell2Id(int spell2Id) {
         this.spell2Id = spell2Id;
+    }
+
+    public double getKillParticipation() {
+        return killParticipation;
+    }
+
+    public void setKillParticipation(double killParticipation) {
+        this.killParticipation = killParticipation;
     }
 
     public ParticipantStats getParticipantStats() {
@@ -107,5 +123,21 @@ public class AccountMatchData {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public long getGameDuration() {
+        return gameDuration;
+    }
+
+    public void setGameDuration(long gameDuration) {
+        this.gameDuration = gameDuration;
+    }
+
+    public String getGameVersion() {
+        return gameVersion;
+    }
+
+    public void setGameVersion(String gameVersion) {
+        this.gameVersion = gameVersion;
     }
 }

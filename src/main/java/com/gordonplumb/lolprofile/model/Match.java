@@ -10,6 +10,7 @@ public class Match {
     private List<ParticipantIdentity> participantIdentities;
     private int queueId;
     private long gameTime;
+    private long gameDuration; // in seconds
     private List<TeamStats> teamStats;
     private String gameVersion;
     private List<Participant> participants;
@@ -44,6 +45,14 @@ public class Match {
 
     public void setGameTime(long gameTime) {
         this.gameTime = gameTime;
+    }
+
+    public long getGameDuration() {
+        return gameDuration;
+    }
+
+    public void setGameDuration(long gameDuration) {
+        this.gameDuration = gameDuration;
     }
 
     public List<TeamStats> getTeamStats() {
