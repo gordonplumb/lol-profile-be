@@ -4,6 +4,7 @@ import com.gordonplumb.lolprofile.model.*;
 import com.gordonplumb.lolprofile.service.ProfileService;
 import com.gordonplumb.lolprofile.service.RiotAPIService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,8 +32,8 @@ public class ProfileController {
 
     @GetMapping(path = "/matches")
     @ResponseBody
-    public List<MatchShortDetails> getMatches(@RequestParam String accountId, @RequestParam int page, @RequestParam int size) {
-        List<MatchShortDetails> resultPage = profileService.findPaginated(accountId, page, size);
+    public Page<MatchShortDetails> getMatches(@RequestParam String accountId, @RequestParam int page, @RequestParam int size) {
+        Page<MatchShortDetails> resultPage = profileService.findPaginated(accountId, page, size);
 
         return resultPage;
     }

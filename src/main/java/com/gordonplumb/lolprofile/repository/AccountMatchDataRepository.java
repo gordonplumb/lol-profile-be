@@ -4,6 +4,7 @@ import com.gordonplumb.lolprofile.model.AccountMatchData;
 import com.gordonplumb.lolprofile.model.AccountMatchDataId;
 import com.gordonplumb.lolprofile.model.AggregateStats;
 import com.gordonplumb.lolprofile.model.MatchShortDetails;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -18,13 +19,14 @@ public interface AccountMatchDataRepository extends PagingAndSortingRepository<A
                 "       a.timestamp, a.game_duration as gameDuration, a.queue, a.game_version as gameVersion" +
                 "  FROM account_match_data a" +
                 " WHERE a.account_id = ?1",
+        countQuery = "SELECT COUNT(*) FROM account_match_data a WHERE a.account_id = ?1",
         nativeQuery = true
     )
-    List<MatchShortDetails> findAllByAccountId(String accountId, Pageable pageable);
+    Page<MatchShortDetails> findAllByAccountId(String accountId, Pageable pageable);
 
     @Query(
         value = "SELECT COUNT(*) as gamesPlayed, SUM(a.win) as wins, AVG(a.kills) as kills," +
-                "       AVG(a.deaths) as deaths, AVG(a.assists) as assists," +
+                "       AVG(a.deaths) as deaths, AVG(a.assists) as assists, AVG(a.game_duration) as gameDuration," +
                 "       AVG(a.kill_participation) as killParticipation, SUM(a.double_kills) as doubleKills," +
                 "       SUM(a.triple_kills) as tripleKills, SUM(a.quadra_kills) as quadraKills," +
                 "       SUM(a.penta_kills) as pentaKills," +
@@ -32,6 +34,9 @@ public interface AccountMatchDataRepository extends PagingAndSortingRepository<A
                 "       SUM(CASE WHEN a.first_tower_kill OR a.first_tower_assist THEN 1 ELSE 0 END) as firstTower," +
                 "       AVG(a.total_damage_dealt_to_champions / a.game_duration * 60) as damagePerMinute," +
                 "       AVG(a.total_heal / a.game_duration * 60) as healPerMinute," +
+                "       AVG(a.total_damage_taken / a.game_duration * 60) as damageTakenPerMinute," +
+                "       AVG(a.damage_self_mitigated / a.game_duration * 60) as damageMitigatedPerMinute," +
+                "       AVG(a.total_time_crowd_control_dealt / a.game_duration * 60) as crowdControlPerMinute," +
                 "       AVG((a.total_minions_killed + a.neutral_minions_killed) / a.game_duration * 60) as csPerMinute," +
                 "       AVG(a.gold_earned / a.game_duration * 60) as goldPerMinute," +
                 "       AVG(a.wards_placed / a.game_duration * 3600) as wardsPlacedPerHour," +
@@ -46,8 +51,23 @@ public interface AccountMatchDataRepository extends PagingAndSortingRepository<A
     AggregateStats getStats(String accountId, List<Integer> queues, List<Integer> roles);
 
     @Query(
-            value = "SELECT COUNT(*) as gamesPlayed, AVG(a.win) as winRate, AVG(a.kills) as kills, AVG(a.deaths) as deaths," +
-                    "       AVG(a.assists) as assists" +
+            value = "SELECT COUNT(*) as gamesPlayed, SUM(a.win) as wins, AVG(a.kills) as kills," +
+                    "       AVG(a.deaths) as deaths, AVG(a.assists) as assists, AVG(a.game_duration) as gameDuration," +
+                    "       AVG(a.kill_participation) as killParticipation, SUM(a.double_kills) as doubleKills," +
+                    "       SUM(a.triple_kills) as tripleKills, SUM(a.quadra_kills) as quadraKills," +
+                    "       SUM(a.penta_kills) as pentaKills," +
+                    "       SUM(CASE WHEN a.first_blood_kill OR a.first_blood_assist THEN 1 ELSE 0 END) as firstBlood," +
+                    "       SUM(CASE WHEN a.first_tower_kill OR a.first_tower_assist THEN 1 ELSE 0 END) as firstTower," +
+                    "       AVG(a.total_damage_dealt_to_champions / a.game_duration * 60) as damagePerMinute," +
+                    "       AVG(a.total_heal / a.game_duration * 60) as healPerMinute," +
+                    "       AVG(a.total_damage_taken / a.game_duration * 60) as damageTakenPerMinute," +
+                    "       AVG(a.damage_self_mitigated / a.game_duration * 60) as damageMitigatedPerMinute," +
+                    "       AVG(a.total_time_crowd_control_dealt / a.game_duration * 60) as crowdControlPerMinute," +
+                    "       AVG((a.total_minions_killed + a.neutral_minions_killed) / a.game_duration * 60) as csPerMinute," +
+                    "       AVG(a.gold_earned / a.game_duration * 60) as goldPerMinute," +
+                    "       AVG(a.wards_placed / a.game_duration * 3600) as wardsPlacedPerHour," +
+                    "       AVG(a.wards_killed / a.game_duration * 3600) as wardsKilledPerHour," +
+                    "       AVG(a.vision_score / a.game_duration * 3600) as visionScorePerHour" +
                     "  FROM account_match_data a" +
                     " WHERE a.account_id = ?1" +
                     "   AND a.champion = ?2" +
