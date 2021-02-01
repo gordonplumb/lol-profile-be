@@ -38,12 +38,6 @@ public class ProfileController {
         return resultPage;
     }
 
-    @GetMapping(path = "/matchData")
-    @ResponseBody
-    public MatchData getMatchData(@RequestParam String accountId, @RequestParam long matchId) {
-        return profileService.getMatchData(accountId, matchId);
-    }
-
     @GetMapping(path = "/updateAccount")
     @ResponseBody
     public void updateAccount(@RequestParam String name) {

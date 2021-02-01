@@ -2,7 +2,6 @@ package com.gordonplumb.lolprofile.service;
 
 import com.gordonplumb.lolprofile.model.*;
 import com.gordonplumb.lolprofile.repository.AccountMatchDataRepository;
-import com.gordonplumb.lolprofile.repository.MatchDataRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +19,6 @@ import java.util.stream.Collectors;
 public class RiotAPIService {
     @Autowired
     private AccountMatchDataRepository accountMatchDataRepository;
-
-    @Autowired
-    private MatchDataRepository matchDataRepository;
 
     private String apiKey = System.getenv("RIOT_API_KEY");
     private Logger logger = LoggerFactory.getLogger(RiotAPIService.class);

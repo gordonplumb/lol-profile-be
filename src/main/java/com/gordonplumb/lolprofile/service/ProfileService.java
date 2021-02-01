@@ -3,7 +3,6 @@ package com.gordonplumb.lolprofile.service;
 import com.gordonplumb.lolprofile.model.*;
 import com.gordonplumb.lolprofile.repository.AccountMatchDataRepository;
 import com.gordonplumb.lolprofile.repository.AccountRepository;
-import com.gordonplumb.lolprofile.repository.MatchDataRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +21,6 @@ public class ProfileService {
 
     @Autowired
     private AccountMatchDataRepository accountMatchDataRepository;
-
-    @Autowired
-    private MatchDataRepository matchDataRepository;
 
     private Logger logger = LoggerFactory.getLogger(ProfileService.class);
 
@@ -54,11 +50,6 @@ public class ProfileService {
         logger.debug("findPaginated: " + accountId + ", " + page + ", " + size);
         Pageable pageable = PageRequest.of(page, size, Sort.by("timestamp").descending());
         return accountMatchDataRepository.findAllByAccountId(accountId, pageable);
-    }
-
-    public MatchData getMatchData(String accountId, long matchId) {
-        logger.debug("getMatchData: " + accountId + ", " + matchId);
-        return matchDataRepository.findById(new AccountMatchDataId(accountId, matchId)).orElse(null);
     }
 
     public AggregateStats getStats(String accountId, Integer champion, List<Integer> queues, List<Integer> roles) {
