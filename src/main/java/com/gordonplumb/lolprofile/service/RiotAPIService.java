@@ -8,10 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @ConfigurationProperties(prefix = "riot")
@@ -50,12 +49,17 @@ public class RiotAPIService {
                 .block();
     }
 
-    public List<AccountMatchData> getMatches(String encryptedAccountId) {
+    public List<AccountMatchData> getMatches(String encryptedAccountId, Date lastUpdatedDate) {
         logger.debug("getMatches: " + encryptedAccountId);
+
+        Optional<Long> beginTimeParam =
+                (lastUpdatedDate != null) ? Optional.of(lastUpdatedDate.getTime()) : Optional.empty();
+
         MatchList matchList = client.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/lol/match/v4/matchlists/by-account/" + encryptedAccountId)
                         .queryParam("queue", QUEUES)
+                        .queryParamIfPresent("beginTime", Optional.of(beginTimeParam))
                         .build())
                 .retrieve()
                 .bodyToMono(MatchList.class)

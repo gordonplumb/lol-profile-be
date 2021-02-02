@@ -2,6 +2,7 @@ package com.gordonplumb.lolprofile.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.Date;
 
 @Entity
 public class Account {
@@ -10,6 +11,7 @@ public class Account {
     private int profileIconId;
     private String name;
     private long summonerLevel;
+    private Date lastUpdatedDate;
 
     public String getAccountId() {
         return accountId;
@@ -41,5 +43,13 @@ public class Account {
 
     public void setSummonerLevel(long summonerLevel) {
         this.summonerLevel = summonerLevel;
+    }
+
+    public Date getLastUpdatedDate() {
+        return lastUpdatedDate;
+    }
+
+    public void setLastUpdatedDate(Date lastUpdatedDate) {
+        this.lastUpdatedDate = lastUpdatedDate;
     }
 }
