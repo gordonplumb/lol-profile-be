@@ -56,13 +56,17 @@ public class ProfileController {
 
             try {
                 Account oldAccount = profileService.getAccount(name);
-                account.setLastUpdatedDate(new Date());
 
                 if (oldAccount == null) {
+                    Date newLastUpdatedDate = riotAPIService.updateMatches(account.getAccountId(), null);
+                    account.setLastUpdatedDate(newLastUpdatedDate);
                     profileService.createAccount(account);
-                    riotAPIService.getMatches(account.getAccountId(), null);
                 } else {
-                    riotAPIService.getMatches(account.getAccountId(), oldAccount.getLastUpdatedDate());
+                    Date newLastUpdatedDate = riotAPIService.updateMatches(
+                            account.getAccountId(),
+                            oldAccount.getLastUpdatedDate()
+                    );
+                    account.setLastUpdatedDate(newLastUpdatedDate);
                     profileService.updateAccount(account);
                 }
             } catch (WebClientResponseException ex) {

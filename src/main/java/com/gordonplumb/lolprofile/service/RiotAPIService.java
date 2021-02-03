@@ -49,7 +49,7 @@ public class RiotAPIService {
                 .block();
     }
 
-    public List<AccountMatchData> getMatches(String encryptedAccountId, Date lastUpdatedDate) {
+    public Date updateMatches(String encryptedAccountId, Date lastUpdatedDate) {
         logger.debug("getMatches: " + encryptedAccountId);
 
         Optional<Long> beginTimeParam =
@@ -59,6 +59,7 @@ public class RiotAPIService {
                 .uri(uriBuilder -> uriBuilder
                         .path("/lol/match/v4/matchlists/by-account/" + encryptedAccountId)
                         .queryParam("queue", QUEUES)
+                        .queryParam("endIndex", 90)
                         .queryParamIfPresent("beginTime", Optional.of(beginTimeParam))
                         .build())
                 .retrieve()
@@ -67,6 +68,7 @@ public class RiotAPIService {
 
         if (matchList != null) {
             List<MatchReference> matchReferences = matchList.getMatches();
+            Date newLastUpdatedDate = new Date(matchReferences.get(0).getTimestamp() + 1);
 
             List<AccountMatchData> accountMatchDataList = matchReferences.stream().map(matchReference -> {
                 Match match = getMatchData(matchReference.getGameId());
@@ -113,19 +115,31 @@ public class RiotAPIService {
 
                 return accountMatchData;
             }).collect(Collectors.toList());
-            return accountMatchDataList;
+            return newLastUpdatedDate;
         }
 
-        return new ArrayList<>();
+        return new Date();
     }
 
     private Match getMatchData(long matchId) {
+        return getMatchData(matchId, 3);
+    }
+
+    private Match getMatchData(long matchId, int retry) {
         logger.debug("getMatchData: " + matchId);
-        return client.get()
-                .uri("/lol/match/v4/matches/" + matchId)
-                .retrieve()
-                .bodyToMono(Match.class)
-                .block();
+        try  {
+            return client.get()
+                    .uri("/lol/match/v4/matches/" + matchId)
+                    .retrieve()
+                    .bodyToMono(Match.class)
+                    .block();
+        } catch (WebClientResponseException ex) {
+            if (ex.getRawStatusCode() == 504 || retry < 1) {
+                return getMatchData(matchId, retry - 1);
+            } else {
+                throw ex;
+            }
+        }
     }
 
     private int getRole(String role, String lane) {
