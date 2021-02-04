@@ -11,8 +11,8 @@
     <groupId>com.gordonplumb</groupId>
     <artifactId>matchhistory</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Revamped Match History</name>
-    <description>Revamped match history for league of legends</description>
+    <name>LOL Profile</name>
+    <description>Match history and stats for League of Legends</description>
 
     <properties>
         <java.version>11</java.version>

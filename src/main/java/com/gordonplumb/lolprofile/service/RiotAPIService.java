@@ -50,7 +50,7 @@ public class RiotAPIService {
     }
 
     public Date updateMatches(String encryptedAccountId, Date lastUpdatedDate) {
-        logger.debug("getMatches: " + encryptedAccountId);
+        logger.debug("updateMatches: " + encryptedAccountId);
 
         Optional<Long> beginTimeParam =
                 (lastUpdatedDate != null) ? Optional.of(lastUpdatedDate.getTime()) : Optional.empty();

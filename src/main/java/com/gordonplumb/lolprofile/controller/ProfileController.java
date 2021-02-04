@@ -48,9 +48,9 @@ public class ProfileController {
         return resultPage;
     }
 
-    @GetMapping(path = "/updateAccount")
+    @PostMapping(path = "/updateAccount")
     @ResponseBody
-    public void updateAccount(@RequestParam String name) {
+    public void updateAccount(@RequestBody String name) {
         try {
             Account account = riotAPIService.getAccount(name);
 
